@@ -45,6 +45,17 @@ class SpaceShooterGame extends FlameGame
         area: Rectangle.fromLTWH(0, 0, size.x - 40, 0),
       ),
     );
+
+    // ==== Auto Bullet Spawn ====
+    add(
+      SpawnComponent(
+        factory: (index) =>
+            Bullet()
+              ..position = Vector2(player.position.x + 20, player.position.y),
+        period: 0.2,
+        selfPositioning: true,
+      ),
+    );
   }
 
   void increaseScore() {
