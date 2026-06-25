@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flame/game.dart';
-import 'package:flame_game/home/space_shooter_game.dart';
+import 'package:aetherius/home/space_shooter_game.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

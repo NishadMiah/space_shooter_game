@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flame_game/home/space_shooter_game.dart';
+import 'package:aetherius/home/space_shooter_game.dart';
 import 'package:flutter/material.dart';
 
 class GameOverOverlay extends StatefulWidget {

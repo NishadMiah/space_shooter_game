@@ -1,6 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_game/home/space_shooter_game.dart';
+import 'package:aetherius/home/space_shooter_game.dart';
 
 class Bullet extends SpriteComponent
     with CollisionCallbacks, HasGameReference<SpaceShooterGame> {

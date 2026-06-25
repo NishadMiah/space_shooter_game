@@ -1,7 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_game/home/bullet.dart';
-import 'package:flame_game/home/space_shooter_game.dart';
+import 'package:aetherius/home/bullet.dart';
+import 'package:aetherius/home/space_shooter_game.dart';
 import 'package:flutter/material.dart';
 
 class Enemy extends SpriteComponent

@@ -4,8 +4,8 @@ import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flame_game/home/bullet.dart';
-import 'package:flame_game/home/enemy.dart';
+import 'package:aetherius/home/bullet.dart';
+import 'package:aetherius/home/enemy.dart';
 import 'package:flutter/material.dart';
 
 class SpaceShooterGame extends FlameGame

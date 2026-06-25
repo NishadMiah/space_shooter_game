@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flame_game/home/space_shooter_game.dart';
+import 'package:aetherius/home/space_shooter_game.dart';
 import 'package:flutter/material.dart';
 
 class MainMenuOverlay extends StatefulWidget {
@@ -142,7 +142,7 @@ class _MainMenuOverlayState extends State<MainMenuOverlay>
                         ),
                         const SizedBox(height: 12),
                         const Text(
-                          'SPACE SHOOTER',
+                          'AETHERIUS',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xFF2C1607),
