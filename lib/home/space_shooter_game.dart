@@ -1,3 +1,4 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
@@ -21,7 +22,7 @@ class SpaceShooterGame extends FlameGame
     player = SpriteComponent(
       sprite: await loadSprite('player.png'),
       size: Vector2(50, 50),
-    );
+    )..add(RectangleHitbox());
     player.position = Vector2(size.x / 2, size.y - 100);
     //=== load player ====
     add(player);
@@ -63,6 +64,23 @@ class SpaceShooterGame extends FlameGame
     score += 10;
     scoreText.text = 'Score: $score';
     debugPrint('Score: $score');
+  }
+
+  void gameOver() {
+    pauseEngine();
+    overlays.add('GameOver');
+  }
+
+  void reset() {
+    score = 0;
+    scoreText.text = 'Score: $score';
+    player.position = Vector2(size.x / 2, size.y - 100);
+
+    children.whereType<Enemy>().forEach((enemy) => enemy.removeFromParent());
+    children.whereType<Bullet>().forEach((bullet) => bullet.removeFromParent());
+
+    resumeEngine();
+    overlays.remove('GameOver');
   }
 
   // ==== Drag ====

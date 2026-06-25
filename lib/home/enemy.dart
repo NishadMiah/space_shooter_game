@@ -27,6 +27,7 @@ class Enemy extends SpriteComponent
 
     if (position.y > game.size.y) {
       removeFromParent();
+      game.gameOver();
     }
   }
 
@@ -41,6 +42,8 @@ class Enemy extends SpriteComponent
       game.increaseScore();
       removeFromParent();
       other.removeFromParent();
+    } else if (other == game.player) {
+      game.gameOver();
     }
   }
 }
