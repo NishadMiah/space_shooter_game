@@ -58,12 +58,19 @@ class SpaceShooterGame extends FlameGame
         selfPositioning: true,
       ),
     );
+
+    pauseEngine();
   }
 
   void increaseScore() {
     score += 10;
     scoreText.text = 'Score: $score';
     debugPrint('Score: $score');
+  }
+
+  void startGame() {
+    resumeEngine();
+    overlays.remove('MainMenu');
   }
 
   void gameOver() {
