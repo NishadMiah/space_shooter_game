@@ -27,7 +27,11 @@ class Enemy extends SpriteComponent
 
     if (position.y > game.size.y) {
       removeFromParent();
-      game.gameOver();
+      if (game.isIntro) {
+        game.onIntroEnemyDestroyed();
+      } else {
+        game.gameOver();
+      }
     }
   }
 
@@ -42,8 +46,16 @@ class Enemy extends SpriteComponent
       game.increaseScore();
       removeFromParent();
       other.removeFromParent();
+      if (game.isIntro) {
+        game.onIntroEnemyDestroyed();
+      }
     } else if (other == game.player) {
-      game.gameOver();
+      if (game.isIntro) {
+        removeFromParent();
+        game.onIntroEnemyDestroyed();
+      } else {
+        game.gameOver();
+      }
     }
   }
 }

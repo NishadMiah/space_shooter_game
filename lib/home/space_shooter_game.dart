@@ -13,6 +13,11 @@ class SpaceShooterGame extends FlameGame
   late SpriteComponent player;
   int score = 0;
   late TextComponent scoreText;
+
+  bool isIntro = true;
+  SpawnComponent? enemySpawner;
+  SpawnComponent? bulletSpawner;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -40,26 +45,18 @@ class SpaceShooterGame extends FlameGame
     );
     add(scoreText);
 
-    add(
-      SpawnComponent(
-        factory: (index) => Enemy(),
-        period: 1.0,
-        area: Rectangle.fromLTWH(0, 0, size.x - 40, 0),
-      ),
-    );
+    // Spawn single intro/story enemy at the start
+    add(Enemy()..position = Vector2(size.x / 2, 100));
 
     // ==== Auto Bullet Spawn ====
-    add(
-      SpawnComponent(
-        factory: (index) =>
-            Bullet()
-              ..position = Vector2(player.position.x + 20, player.position.y),
-        period: 0.2,
-        selfPositioning: true,
-      ),
+    bulletSpawner = SpawnComponent(
+      factory: (index) =>
+          Bullet()
+            ..position = Vector2(player.position.x + 20, player.position.y),
+      period: 0.2,
+      selfPositioning: true,
     );
-
-    pauseEngine();
+    add(bulletSpawner!);
   }
 
   void increaseScore() {
@@ -68,7 +65,29 @@ class SpaceShooterGame extends FlameGame
     debugPrint('Score: $score');
   }
 
+  void onIntroEnemyDestroyed() {
+    pauseEngine();
+    overlays.remove('StoryIntro');
+    overlays.add('MainMenu');
+    isIntro = false;
+  }
+
   void startGame() {
+    score = 0;
+    scoreText.text = 'Score: $score';
+    player.position = Vector2(size.x / 2, size.y - 100);
+
+    // Initialize and add spawner components for normal play
+    if (enemySpawner == null) {
+      enemySpawner = SpawnComponent(
+        factory: (index) => Enemy(),
+        period: 1.0,
+        area: Rectangle.fromLTWH(0, 0, size.x - 40, 0),
+      );
+      add(enemySpawner!);
+    }
+    // Bullet spawner is already initialized and active from onLoad
+
     resumeEngine();
     overlays.remove('MainMenu');
   }
@@ -85,6 +104,10 @@ class SpaceShooterGame extends FlameGame
 
     children.whereType<Enemy>().forEach((enemy) => enemy.removeFromParent());
     children.whereType<Bullet>().forEach((bullet) => bullet.removeFromParent());
+
+    if (isIntro) {
+      add(Enemy()..position = Vector2(size.x / 2, 100));
+    }
 
     resumeEngine();
     overlays.remove('GameOver');
