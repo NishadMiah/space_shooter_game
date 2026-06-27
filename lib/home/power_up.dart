@@ -14,8 +14,22 @@ class PowerUp extends PositionComponent
   double _animTimer = 0;
 
   PowerUp({required this.type, required Vector2 spawnPosition})
-      : super(size: Vector2(32, 32), anchor: Anchor.center) {
+    : super(size: Vector2(32, 32), anchor: Anchor.center) {
     position = spawnPosition;
+  }
+
+  static PowerUpType randomType() {
+    final rand = math.Random();
+    final roll = rand.nextDouble();
+    if (roll < 0.40) {
+      return PowerUpType.shield; // 40% chance
+    } else if (roll < 0.70) {
+      return PowerUpType.speed; // 40% chance
+    } else if (roll < 0.80) {
+      return PowerUpType.heart; // 10% chance (decreased)
+    } else {
+      return PowerUpType.bulletUp; // 10% chance (decreased)
+    }
   }
 
   String get _emoji {
@@ -63,9 +77,7 @@ class PowerUp extends PositionComponent
       text: _emoji,
       position: Vector2(16, 16),
       anchor: Anchor.center,
-      textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 18),
-      ),
+      textRenderer: TextPaint(style: const TextStyle(fontSize: 18)),
     );
     add(_icon);
 

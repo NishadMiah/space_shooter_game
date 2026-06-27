@@ -360,9 +360,8 @@ class SpaceShooterGame extends FlameGame
   void _spawnSkyPowerUp() {
     final rand = Random();
     final x = 20 + rand.nextDouble() * (size.x - 40);
-    final types = PowerUpType.values;
-    final type = types[rand.nextInt(types.length)];
-    add(PowerUp(type: type, spawnPosition: Vector2(x, -20)));
+    final picked = PowerUp.randomType();
+    add(PowerUp(type: picked, spawnPosition: Vector2(x, -20)));
   }
 
   // ──────────────────────────────────────────────────────────────────────────

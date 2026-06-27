@@ -144,8 +144,7 @@ class Enemy extends SpriteComponent
     final rand = math.Random();
     final dropChance = 0.02 + rand.nextDouble() * 0.10;
     if (rand.nextDouble() < dropChance) {
-      final types = PowerUpType.values;
-      final picked = types[rand.nextInt(types.length)];
+      final picked = PowerUp.randomType();
       game.add(PowerUp(type: picked, spawnPosition: position.clone()));
     }
   }
