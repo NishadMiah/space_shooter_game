@@ -312,9 +312,10 @@ class _MainMenuOverlayState extends State<MainMenuOverlay>
                             shadowColor: Colors.black,
                           ),
                           onPressed: () {
-                            widget.game.startGame();
+                            widget.game.overlays.remove('MainMenu');
+                            widget.game.overlays.add('LevelSelect');
                           },
-                          child: const Text('PLAY'),
+                          child: const Text('SELECT LEVEL'),
                         ),
                       ],
                     ),

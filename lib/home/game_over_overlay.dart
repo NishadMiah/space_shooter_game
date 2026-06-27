@@ -47,20 +47,17 @@ class _GameOverOverlayState extends State<GameOverOverlay>
       parent: _controller,
       curve: const Interval(0.45, 0.60, curve: Curves.easeOut),
     );
-
     _line2Animation = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0.60, 0.75, curve: Curves.easeOut),
     );
-
     _line3Animation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.75, 0.90, curve: Curves.easeOut),
+      curve: const Interval(0.75, 0.88, curve: Curves.easeOut),
     );
-
     _line4Animation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.90, 1.0, curve: Curves.easeOut),
+      curve: const Interval(0.88, 1.0, curve: Curves.easeOut),
     );
 
     _controller.forward();
@@ -92,8 +89,8 @@ class _GameOverOverlayState extends State<GameOverOverlay>
 
   @override
   Widget build(BuildContext context) {
-    final isNewHighScore = widget.game.score > 0 &&
-        widget.game.score >= widget.game.highScore;
+    final isNewHighScore =
+        widget.game.score > 0 && widget.game.score >= widget.game.highScore;
 
     return Center(
       child: AnimatedBuilder(
@@ -115,7 +112,8 @@ class _GameOverOverlayState extends State<GameOverOverlay>
             painter: ParchmentPainter(),
             child: Container(
               width: 310,
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 36),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 28, vertical: 36),
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
                   center: Alignment.center,
@@ -130,7 +128,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Line 1: Title
+                  // ── Line 1: Title ──────────────────────────────────────
                   _buildStaggeredLine(
                     animation: _line1Animation,
                     child: Column(
@@ -164,7 +162,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                     ),
                   ),
 
-                  // Line 2: Score & Level
+                  // ── Line 2: Score & Level ──────────────────────────────
                   _buildStaggeredLine(
                     animation: _line2Animation,
                     child: Column(
@@ -194,10 +192,11 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 14),
                         // Level reached badge
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 6),
                           decoration: BoxDecoration(
                             color: const Color(0xFF2C1607).withAlpha(12),
                             borderRadius: BorderRadius.circular(6),
@@ -215,7 +214,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                             ),
                           ),
                         ),
-                        const SizedBox(height: 14),
+                        const SizedBox(height: 12),
                         Text(
                           'Score: ${widget.game.score}',
                           style: const TextStyle(
@@ -229,7 +228,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                     ),
                   ),
 
-                  // Line 3: High Score
+                  // ── Line 3: High Score ─────────────────────────────────
                   _buildStaggeredLine(
                     animation: _line3Animation,
                     child: Column(
@@ -238,7 +237,8 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                         const SizedBox(height: 10),
                         if (isNewHighScore)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFFDD00).withAlpha(40),
                               borderRadius: BorderRadius.circular(6),
@@ -260,7 +260,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                           )
                         else
                           Text(
-                            'Best: ${widget.game.highScore}',
+                            '🏆  Best: ${widget.game.highScore}',
                             style: const TextStyle(
                               color: Color(0xFF7A5500),
                               fontSize: 14,
@@ -271,21 +271,19 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                     ),
                   ),
 
-                  // Line 4: Restart Button
+                  // ── Line 4: Buttons ────────────────────────────────────
                   _buildStaggeredLine(
                     animation: _line4Animation,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 22),
+                        // RESTART — same level
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF8A1C14),
                             foregroundColor: const Color(0xFFFDF6E2),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 40,
-                              vertical: 12,
-                            ),
+                            minimumSize: const Size(double.infinity, 44),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6),
                               side: const BorderSide(
@@ -294,7 +292,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                               ),
                             ),
                             textStyle: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'serif',
                               letterSpacing: 1.5,
@@ -302,10 +300,31 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                             elevation: 5,
                             shadowColor: Colors.black,
                           ),
-                          onPressed: () {
-                            widget.game.reset();
-                          },
-                          child: const Text('RESTART'),
+                          onPressed: () => widget.game.restart(),
+                          child: const Text('▶  RESTART'),
+                        ),
+                        const SizedBox(height: 10),
+                        // LEVEL SELECT
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFF2C1607),
+                            minimumSize: const Size(double.infinity, 40),
+                            side: const BorderSide(
+                              color: Color(0xFF5C3A21),
+                              width: 1.5,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'serif',
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          onPressed: () => widget.game.returnToLevelSelect(),
+                          child: const Text('☰  LEVEL SELECT'),
                         ),
                       ],
                     ),

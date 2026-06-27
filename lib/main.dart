@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:aetherius/home/game_over_overlay.dart';
+import 'package:aetherius/home/level_select_overlay.dart';
 import 'package:aetherius/home/level_up_overlay.dart';
 import 'package:aetherius/home/main_menu_overlay.dart';
 import 'package:aetherius/home/space_shooter_game.dart';
@@ -15,6 +16,7 @@ void main() async {
       overlayBuilderMap: {
         'StoryIntro': (context, game) => StoryIntroOverlay(game: game),
         'MainMenu': (context, game) => MainMenuOverlay(game: game),
+        'LevelSelect': (context, game) => LevelSelectOverlay(game: game),
         'GameOver': (context, game) => GameOverOverlay(game: game),
         'LevelUp': (context, game) => LevelUpOverlay(
           level: game.currentLevel,
