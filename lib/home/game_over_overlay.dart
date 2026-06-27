@@ -19,6 +19,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
   late Animation<double> _line1Animation;
   late Animation<double> _line2Animation;
   late Animation<double> _line3Animation;
+  late Animation<double> _line4Animation;
 
   @override
   void initState() {
@@ -28,7 +29,6 @@ class _GameOverOverlayState extends State<GameOverOverlay>
       vsync: this,
     );
 
-    // 1. Unfolding animation
     _unfoldWidthAnimation = Tween<double>(begin: 0.3, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -43,20 +43,24 @@ class _GameOverOverlayState extends State<GameOverOverlay>
       ),
     );
 
-    // 2. Staggered printing/fade-in
     _line1Animation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.45, 0.62, curve: Curves.easeOut),
+      curve: const Interval(0.45, 0.60, curve: Curves.easeOut),
     );
 
     _line2Animation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.62, 0.80, curve: Curves.easeOut),
+      curve: const Interval(0.60, 0.75, curve: Curves.easeOut),
     );
 
     _line3Animation = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.80, 1.0, curve: Curves.easeOut),
+      curve: const Interval(0.75, 0.90, curve: Curves.easeOut),
+    );
+
+    _line4Animation = CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0.90, 1.0, curve: Curves.easeOut),
     );
 
     _controller.forward();
@@ -88,6 +92,9 @@ class _GameOverOverlayState extends State<GameOverOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final isNewHighScore = widget.game.score > 0 &&
+        widget.game.score >= widget.game.highScore;
+
     return Center(
       child: AnimatedBuilder(
         animation: _controller,
@@ -107,23 +114,23 @@ class _GameOverOverlayState extends State<GameOverOverlay>
           child: CustomPaint(
             painter: ParchmentPainter(),
             child: Container(
-              width: 300,
+              width: 310,
               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 36),
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
                   center: Alignment.center,
                   radius: 0.85,
                   colors: [
-                    Color(0xFFFDF6E2), // Bright center
-                    Color(0xFFF5E6CA), // Medium paper
-                    Color(0xFFDCC298), // Aged edges
+                    Color(0xFFFDF6E2),
+                    Color(0xFFF5E6CA),
+                    Color(0xFFDCC298),
                   ],
                 ),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Line 1: Header/Title
+                  // Line 1: Title
                   _buildStaggeredLine(
                     animation: _line1Animation,
                     child: Column(
@@ -139,7 +146,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                           'GAME OVER',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Color(0xFF6B1D1D), // Deep crimson/dried blood color
+                            color: Color(0xFF6B1D1D),
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'serif',
@@ -157,7 +164,7 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                     ),
                   ),
 
-                  // Line 2: Score Display & Separator
+                  // Line 2: Score & Level
                   _buildStaggeredLine(
                     animation: _line2Animation,
                     child: Column(
@@ -187,7 +194,28 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
+                        // Level reached badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2C1607).withAlpha(12),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: const Color(0xFF5C3A21).withAlpha(60),
+                            ),
+                          ),
+                          child: Text(
+                            '⚔️  Level ${widget.game.currentLevel} Reached',
+                            style: const TextStyle(
+                              color: Color(0xFF2C1607),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'serif',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
                         Text(
                           'Score: ${widget.game.score}',
                           style: const TextStyle(
@@ -201,16 +229,58 @@ class _GameOverOverlayState extends State<GameOverOverlay>
                     ),
                   ),
 
-                  // Line 3: Restart Button
+                  // Line 3: High Score
                   _buildStaggeredLine(
                     animation: _line3Animation,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const SizedBox(height: 28),
+                        const SizedBox(height: 10),
+                        if (isNewHighScore)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFDD00).withAlpha(40),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: const Color(0xFFBB8800),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: const Text(
+                              '🏆  NEW HIGH SCORE!',
+                              style: TextStyle(
+                                color: Color(0xFF7A5500),
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'serif',
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          )
+                        else
+                          Text(
+                            'Best: ${widget.game.highScore}',
+                            style: const TextStyle(
+                              color: Color(0xFF7A5500),
+                              fontSize: 14,
+                              fontFamily: 'serif',
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+
+                  // Line 4: Restart Button
+                  _buildStaggeredLine(
+                    animation: _line4Animation,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 24),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF8A1C14), // Wax seal red
+                            backgroundColor: const Color(0xFF8A1C14),
                             foregroundColor: const Color(0xFFFDF6E2),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 40,

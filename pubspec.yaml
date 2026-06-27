@@ -38,6 +38,9 @@ dependencies:
   # Flame game engine
   flame: ^1.37.0
 
+  # Persistent storage for high score
+  shared_preferences: ^2.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -163,14 +163,14 @@ class _MainMenuOverlayState extends State<MainMenuOverlay>
                     ),
                   ),
 
-                  // Line 2: Subtitle
+                  // Line 2: Subtitle + High Score
                   _buildStaggeredLine(
                     animation: _line2Animation,
-                    child: const Column(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: 6),
-                        Text(
+                        const SizedBox(height: 6),
+                        const Text(
                           'Defend the galaxy!',
                           style: TextStyle(
                             color: Color(0xFF5C3A21),
@@ -178,6 +178,29 @@ class _MainMenuOverlayState extends State<MainMenuOverlay>
                             fontFamily: 'serif',
                             fontStyle: FontStyle.italic,
                           ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              '🏆  Best: ',
+                              style: TextStyle(
+                                color: Color(0xFF7A5500),
+                                fontSize: 14,
+                                fontFamily: 'serif',
+                              ),
+                            ),
+                            Text(
+                              '${widget.game.highScore}',
+                              style: const TextStyle(
+                                color: Color(0xFF7A5500),
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'serif',
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
