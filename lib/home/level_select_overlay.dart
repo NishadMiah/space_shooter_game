@@ -53,9 +53,11 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
             children: [
               // ── Header ────────────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 12,
+                padding: const EdgeInsets.only(
+                  left: 8,
+                  right: 8,
+                  top: 18,
+                  bottom: 12,
                 ),
                 child: Row(
                   children: [

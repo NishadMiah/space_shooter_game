@@ -5,6 +5,7 @@ import 'package:aetherius/home/level_up_overlay.dart';
 import 'package:aetherius/home/main_menu_overlay.dart';
 import 'package:aetherius/home/space_shooter_game.dart';
 import 'package:aetherius/home/story_intro_overlay.dart';
+import 'package:aetherius/home/pause_overlay.dart';
 import 'package:aetherius/home/sound_service.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,8 @@ void main() async {
           level: game.currentLevel,
           onDone: () => game.overlays.remove('LevelUp'),
         ),
+        'PauseButton': (context, game) => PauseButtonOverlay(game: game),
+        'PauseMenu': (context, game) => PauseMenuOverlay(game: game),
       },
     ),
   );

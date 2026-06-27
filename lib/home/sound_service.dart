@@ -140,15 +140,18 @@ class SoundService {
 
   static Uint8List _getLaserBytes() {
     const sampleRate = 11025;
-    const duration = 0.15;
+    const duration = 0.08; // Snappy 80ms duration
     final numSamples = (sampleRate * duration).toInt();
     final data = Uint8List(44 + numSamples);
     data.setRange(0, 44, _generateWavHeader(numSamples, sampleRate));
     for (int i = 0; i < numSamples; i++) {
       final t = i / numSamples;
-      final frequency = 800 - t * 600;
+      // High-pitched sweep: 1600Hz down to 600Hz
+      final frequency = 1600 - t * 1000;
       final angle = 2 * math.pi * frequency * (i / sampleRate);
-      final sample = (math.sin(angle) * 60 + 128).toInt().clamp(0, 255);
+      // Clean decay envelope to make it crisp and remove cracking sounds
+      final envelope = math.exp(-3 * t);
+      final sample = (math.sin(angle) * envelope * 55 + 128).toInt().clamp(0, 255);
       data[44 + i] = sample;
     }
     return data;

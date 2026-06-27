@@ -85,7 +85,7 @@ class SpaceShooterGame extends FlameGame
     // HUD — Score (top-left)
     scoreText = TextComponent(
       text: 'Score: 0',
-      position: Vector2(20, 40),
+      position: Vector2(20, 65),
       textRenderer: TextPaint(
         style: const TextStyle(
           color: Colors.white,
@@ -100,7 +100,7 @@ class SpaceShooterGame extends FlameGame
     // HUD — Best score (top-left, second row)
     highScoreText = TextComponent(
       text: 'Best: $highScore',
-      position: Vector2(20, 68),
+      position: Vector2(20, 93),
       textRenderer: TextPaint(
         style: const TextStyle(
           color: Color(0xFFFFDD44),
@@ -114,7 +114,7 @@ class SpaceShooterGame extends FlameGame
     // HUD — Level (top-center)
     levelText = TextComponent(
       text: 'LVL 1',
-      position: Vector2(size.x / 2, 40),
+      position: Vector2(size.x / 2, 65),
       anchor: Anchor.topCenter,
       textRenderer: TextPaint(
         style: const TextStyle(
@@ -130,7 +130,7 @@ class SpaceShooterGame extends FlameGame
     // HUD — Lives (top-right)
     livesText = TextComponent(
       text: '❤️ ❤️ ❤️',
-      position: Vector2(size.x - 16, 40),
+      position: Vector2(size.x - 16, 65),
       anchor: Anchor.topRight,
       textRenderer: TextPaint(style: const TextStyle(fontSize: 20)),
     );
@@ -139,7 +139,7 @@ class SpaceShooterGame extends FlameGame
     // HUD — Bullet count (top-right, second row)
     bulletIndicator = TextComponent(
       text: '• ×1',
-      position: Vector2(size.x - 16, 68),
+      position: Vector2(size.x - 16, 93),
       anchor: Anchor.topRight,
       textRenderer: TextPaint(
         style: const TextStyle(
@@ -437,11 +437,15 @@ class SpaceShooterGame extends FlameGame
     overlays.remove('MainMenu');
     overlays.remove('LevelSelect');
     overlays.remove('GameOver');
+    overlays.remove('PauseMenu');
+    // Show pause button overlay during gameplay
+    overlays.add('PauseButton');
   }
 
   void gameOver() {
     HighScoreService.saveHighScore(score);
     pauseEngine();
+    overlays.remove('PauseButton');
     overlays.add('GameOver');
   }
 
@@ -457,6 +461,8 @@ class SpaceShooterGame extends FlameGame
     children.whereType<PowerUp>().forEach((p) => p.removeFromParent());
     player.children.whereType<CircleComponent>().forEach((c) => c.removeFromParent());
     overlays.remove('GameOver');
+    overlays.remove('PauseButton');
+    overlays.remove('PauseMenu');
     overlays.add('LevelSelect');
     // engine stays paused — startGame() will resume it
   }
