@@ -9,6 +9,7 @@ import 'package:aetherius/home/enemy.dart';
 import 'package:aetherius/home/enemy_bullet.dart';
 import 'package:aetherius/home/high_score_service.dart';
 import 'package:aetherius/home/power_up.dart';
+import 'package:aetherius/home/sound_service.dart';
 import 'package:flutter/material.dart';
 
 class SpaceShooterGame extends FlameGame
@@ -187,6 +188,7 @@ class SpaceShooterGame extends FlameGame
   // ──────────────────────────────────────────────────────────────────────────
   void onEnemyKilled() {
     enemiesKilled++;
+    SoundService.playExplosion();
     if (enemiesKilled >= _enemiesForNextLevel) {
       // Random multiplier ×1.5 to ×2.5 — keeps each level length surprising
       final factor = 1.5 + Random().nextDouble(); // 1.5 → 2.5
@@ -203,6 +205,7 @@ class SpaceShooterGame extends FlameGame
         HighScoreService.saveHighestLevel(currentLevel);
       }
 
+      SoundService.playLevelUp();
       overlays.add('LevelUp');
     }
   }
@@ -233,6 +236,7 @@ class SpaceShooterGame extends FlameGame
   // ──────────────────────────────────────────────────────────────────────────
   void loseLife() {
     if (isShielded) return;
+    SoundService.playHit();
     lives = (lives - 1).clamp(0, maxLives);
     _updateLivesHUD();
     if (lives <= 0) gameOver();
@@ -242,6 +246,7 @@ class SpaceShooterGame extends FlameGame
   /// Loses 1 bullet lane first; loses a life if already at minimum.
   void onEnemyBulletHit() {
     if (isShielded) return;
+    SoundService.playHit();
     if (bulletCount > 1) {
       bulletCount--;
       _updateBulletHUD();
@@ -261,6 +266,7 @@ class SpaceShooterGame extends FlameGame
   // Power-ups
   // ──────────────────────────────────────────────────────────────────────────
   void collectPowerUp(PowerUpType type) {
+    SoundService.playPowerUp();
     switch (type) {
       case PowerUpType.heart:
         gainLife();
@@ -317,6 +323,9 @@ class SpaceShooterGame extends FlameGame
     final py = player.position.y;
     // During intro always fire single bullet
     final count = isIntro ? 1 : bulletCount;
+
+    // Play laser sound!
+    SoundService.playLaser();
 
     // Even spread positions for 1–5 bullets across player width (~50px)
     // Offsets: 1→[25], 2→[10,40], 3→[5,25,45], 4→[3,18,33,48], 5→[1,13,25,37,49]

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:aetherius/home/space_shooter_game.dart';
+import 'package:aetherius/home/sound_service.dart';
 import 'package:flutter/material.dart';
 
 class LevelSelectOverlay extends StatefulWidget {
@@ -22,8 +23,7 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
       duration: const Duration(milliseconds: 350),
       vsync: this,
     )..forward();
-    _fadeAnim =
-        CurvedAnimation(parent: _fadeController, curve: Curves.easeOut);
+    _fadeAnim = CurvedAnimation(parent: _fadeController, curve: Curves.easeOut);
   }
 
   @override
@@ -45,11 +45,7 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF04000F),
-              Color(0xFF0B0025),
-              Color(0xFF04000F),
-            ],
+            colors: [Color(0xFF04000F), Color(0xFF0B0025), Color(0xFF04000F)],
           ),
         ),
         child: SafeArea(
@@ -57,13 +53,17 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
             children: [
               // ── Header ────────────────────────────────────────────────
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_ios,
-                          color: Colors.white70),
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white70,
+                      ),
                       onPressed: () {
                         widget.game.overlays.remove('LevelSelect');
                         widget.game.overlays.add('MainMenu');
@@ -79,15 +79,23 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
                           fontWeight: FontWeight.bold,
                           letterSpacing: 4,
                           shadows: [
-                            Shadow(
-                              color: Color(0xFFAA44FF),
-                              blurRadius: 14,
-                            ),
+                            Shadow(color: Color(0xFFAA44FF), blurRadius: 14),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(width: 48),
+                    IconButton(
+                      icon: Icon(
+                        SoundService.enabled
+                            ? Icons.volume_up_rounded
+                            : Icons.volume_off_rounded,
+                        color: Colors.white70,
+                      ),
+                      onPressed: () async {
+                        await SoundService.toggleSound();
+                        setState(() {});
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -110,7 +118,10 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
 
               // ── Best score bar ─────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 4,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -139,9 +150,10 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 8),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
@@ -190,8 +202,10 @@ class _LevelSelectOverlayState extends State<LevelSelectOverlay>
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 6),
-        Text(label,
-            style: const TextStyle(color: Colors.white54, fontSize: 11)),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white54, fontSize: 11),
+        ),
       ],
     );
   }
@@ -204,11 +218,7 @@ class _LevelCard extends StatefulWidget {
   final bool isUnlocked;
   final VoidCallback? onTap;
 
-  const _LevelCard({
-    required this.level,
-    required this.isUnlocked,
-    this.onTap,
-  });
+  const _LevelCard({required this.level, required this.isUnlocked, this.onTap});
 
   @override
   State<_LevelCard> createState() => _LevelCardState();
@@ -226,9 +236,10 @@ class _LevelCardState extends State<_LevelCard>
       duration: const Duration(milliseconds: 1600),
       vsync: this,
     );
-    _pulseAnim = Tween<double>(begin: 0.55, end: 1.0).animate(
-      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut),
-    );
+    _pulseAnim = Tween<double>(
+      begin: 0.55,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut));
     if (widget.isUnlocked) {
       _pulseCtrl.repeat(reverse: true);
     }
@@ -284,9 +295,7 @@ class _LevelCardState extends State<_LevelCard>
               ),
               boxShadow: [
                 BoxShadow(
-                  color: _themeColor.withAlpha(
-                    (80 * _pulseAnim.value).toInt(),
-                  ),
+                  color: _themeColor.withAlpha((80 * _pulseAnim.value).toInt()),
                   blurRadius: 14,
                   spreadRadius: 1,
                 ),
@@ -319,8 +328,7 @@ class _LevelCardState extends State<_LevelCard>
             ),
             const SizedBox(height: 8),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white.withAlpha(28),
                 borderRadius: BorderRadius.circular(20),

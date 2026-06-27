@@ -38,8 +38,12 @@ dependencies:
   # Flame game engine
   flame: ^1.37.0
 
-  # Persistent storage for high score
+  # Persistent storage for high score & sound toggle
   shared_preferences: ^2.3.0
+
+  # Sound playback (plays in-memory generated WAV — no audio files needed)
+  audioplayers: ^6.0.0
+  path_provider: ^2.1.0
 
 dev_dependencies:
   flutter_test:

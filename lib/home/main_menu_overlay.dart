@@ -1,5 +1,6 @@
 import 'package:aetherius/home/space_shooter_game.dart';
 import 'package:aetherius/home/parchment_theme.dart';
+import 'package:aetherius/home/sound_service.dart';
 import 'package:flutter/material.dart';
 
 class MainMenuOverlay extends StatefulWidget {
@@ -316,6 +317,18 @@ class _MainMenuOverlayState extends State<MainMenuOverlay>
                             widget.game.overlays.add('LevelSelect');
                           },
                           child: const Text('SELECT LEVEL'),
+                        ),
+                        const SizedBox(height: 14),
+                        IconButton(
+                          icon: Icon(
+                            SoundService.enabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
+                            color: const Color(0xFF5C3A21),
+                            size: 28,
+                          ),
+                          onPressed: () async {
+                            await SoundService.toggleSound();
+                            setState(() {});
+                          },
                         ),
                       ],
                     ),
